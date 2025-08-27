@@ -1,0 +1,91 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+env/
+ENV/
+env.bak/
+venv.bak/
+.venv/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Git
+.git/
+
+# Docker
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Development/Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+.hypothesis/
+logs/*.log
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+.tmp/
+
+# Documentation
+*.md
+docs/
+deploy.sh
+test/start_web.sh
+test/quick_start.sh
+test/final_start.sh
+.env
+.env.*
+config.ini
+secrets.yml
+node_modules/
+go.mod
+go.sum
+*.go
+
+# Test files
+test/
