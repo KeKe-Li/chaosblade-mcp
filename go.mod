@@ -1,0 +1,3 @@
+module chaosble-mcp
+
+go 1.24.4

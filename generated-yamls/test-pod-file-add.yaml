@@ -1,0 +1,21 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: test-pod-file-add
+  namespace: default
+spec:
+  experiments:
+  - scope: pod
+    target: file
+    action: add
+    desc: "Pod文件添加测试"
+    matchers:
+    - name: names
+      value: ["mysql-mysql-54f7c8544d-rcp52"]
+    - name: namespace
+      value: ["chaosblade"]
+    flags:
+    - name: filepath
+      value: /home/test.log
+    - name: content
+      value: "test content"

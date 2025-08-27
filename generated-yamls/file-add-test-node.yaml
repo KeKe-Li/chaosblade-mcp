@@ -1,0 +1,29 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: file-add-test-node
+  namespace: default
+spec:
+  experiments:
+  - scope: node
+    target: file
+    action: add
+    desc: 文件添加测试 (node scope)
+    matchers:
+    - name: names
+      value:
+      - localhost
+    - name: namespace
+      value:
+      - default
+    flags:
+    - name: timeout
+      value: '300'
+    - name: count
+      value: '1'
+    - name: filepath
+      value: /path/to/file.txt
+    - name: file
+      value: add
+    - name: file-path
+      value: add

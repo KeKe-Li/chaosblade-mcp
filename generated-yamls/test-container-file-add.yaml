@@ -1,0 +1,25 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: test-container-file-add
+  namespace: default
+spec:
+  experiments:
+  - scope: container
+    target: file
+    action: add
+    desc: "容器文件添加测试"
+    matchers:
+    - name: names
+      value: ["blade-ops-57744d57c5-qpnwj"]
+    - name: container-names
+      value: ["blade-ops"]
+    - name: namespace
+      value: ["chaos"]
+    flags:
+    - name: filepath
+      value: /root/test.sh
+    - name: enable-base64
+      value: "true"
+    - name: content
+      value: "IyEvYmluL2Jhc2ggCnN0YXJ0MCgpewogZWNobyAi6L+Z5piv5oiR55qE56ys5LqM5LiqIHNoZWxsIOWHveaVsCEiCiBleHByIDEgKyAxCn0KY2Qgfi8KdG91Y2ggJDIudHh0Cg=="

@@ -1,0 +1,17 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: host-add-file-byname
+spec:
+  experiments:
+    - scope: host
+      target: file
+      action: add
+      desc: "host-add-file-byname"
+      matchers:
+        - name: filepath
+          value: ["/tmp/host-test.log"]
+        - name: content
+          value: ["this is a host file test"]
+        - name: enable-base64
+          value: ["false"]

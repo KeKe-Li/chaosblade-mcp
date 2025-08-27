@@ -1,0 +1,23 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: file-append-test
+  namespace: default
+spec:
+  experiments:
+  - scope: host
+    target: file
+    action: append
+    desc: 文件追加测试
+    matchers: []
+    flags:
+    - name: filepath
+      value: /app/test.log
+    - name: content
+      value: test content
+    - name: file
+      value: /app/test.log，内容为
+    - name: pod-name
+      value: nginx-pod-12345
+    - name: file-path
+      value: /app/test.log

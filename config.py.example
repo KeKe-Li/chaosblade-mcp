@@ -1,0 +1,33 @@
+# ChaosBlade Web Interface Configuration
+
+# Web服务器配置
+WEB_HOST = '0.0.0.0'
+WEB_PORT = 5001
+WEB_DEBUG = True
+
+# API配置
+API_BASE_URL = 'http://localhost:5001'
+API_TIMEOUT = 30
+
+# 文件配置
+GENERATED_DIR = 'generated-yamls'
+LOG_DIR = 'logs'
+MAX_FILE_SIZE = 10 * 1024 * 1024  # 10MB
+
+# 安全配置
+SECRET_KEY = 'your-secret-key-change-in-production'
+CORS_ORIGINS = ['*']
+
+# ChaosBlade配置
+CHAOSBLADE_DEFAULT_TIMEOUT = '300s'
+CHAOSBLADE_SAFE_MODE = True
+
+# LLM API配置
+LLM_BASE_URL = "xxx"
+LLM_API_KEY = ""
+LLM_DEFAULT_HEADERS = {
+    "Authorization": "Basic xxxx"
+}
+LLM_MODEL = "llama3.1:latest"
+LLM_TEMPERATURE = 0.1
+LLM_TIMEOUT = 30

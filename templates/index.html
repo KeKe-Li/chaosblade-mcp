@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChaosBlade YAML 生成器</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- 侧边栏 -->
+            <div class="col-md-3 sidebar">
+                <div class="sidebar-header">
+                    <h4><i class="fas fa-cube"></i> ChaosBlade</h4>
+                    <p class="text-muted">YAML 生成器</p>
+                </div>
+                
+                <!-- 快速模板 -->
+                <div class="sidebar-section">
+                    <h6><i class="fas fa-templates"></i> 快速模板</h6>
+                    <div class="template-list" id="templateList">
+                        <!-- 模板将通过JS动态加载 -->
+                    </div>
+                </div>
+                
+                <!-- 历史记录 -->
+                <div class="sidebar-section">
+                    <h6><i class="fas fa-history"></i> 历史记录</h6>
+                    <div class="file-list" id="fileList">
+                        <!-- 文件列表将通过JS动态加载 -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 主内容区 -->
+            <div class="col-md-9 main-content">
+                <!-- 头部 -->
+                <div class="header">
+                    <h1>ChaosBlade YAML 生成器</h1>
+                    <p class="lead">使用自然语言生成混沌工程实验配置</p>
+                </div>
+                
+                <!-- 输入区域 -->
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-edit"></i> 输入指令</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="instructionInput" class="form-label">自然语言指令</label>
+                            <textarea class="form-control" id="instructionInput" rows="3" 
+                                    placeholder="例如：在节点 node-1 上添加文件 /root/test.log，内容为 hello world"></textarea>
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary" id="generateBtn">
+                                <i class="fas fa-magic"></i> 生成 YAML
+                            </button>
+                            <button class="btn btn-outline-secondary" id="clearBtn">
+                                <i class="fas fa-eraser"></i> 清空
+                            </button>
+                            <button class="btn btn-outline-info" id="batchBtn">
+                                <i class="fas fa-layer-group"></i> 批量生成
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 加载状态 -->
+                <div class="loading-container" id="loadingContainer" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">加载中...</span>
+                    </div>
+                    <p>正在生成 YAML...</p>
+                </div>
+                
+                <!-- 结果显示区域 -->
+                <div class="result-container" id="resultContainer" style="display: none;">
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5><i class="fas fa-file-code"></i> 生成的 YAML</h5>
+                            <div class="btn-group">
+                                <button class="btn btn-sm btn-outline-primary" id="copyBtn">
+                                    <i class="fas fa-copy"></i> 复制
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" id="downloadBtn">
+                                    <i class="fas fa-download"></i> 下载
+                                </button>
+                                <button class="btn btn-sm btn-outline-secondary" id="newBtn">
+                                    <i class="fas fa-plus"></i> 新建
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <pre><code class="language-yaml" id="yamlContent"></code></pre>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 错误信息 -->
+                <div class="alert alert-danger" id="errorAlert" style="display: none;">
+                    <h5><i class="fas fa-exclamation-triangle"></i> 错误</h5>
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 批量生成模态框 -->
+    <div class="modal fade" id="batchModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">批量生成 YAML</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="batchInstructions" class="form-label">指令列表（每行一个指令）</label>
+                        <textarea class="form-control" id="batchInstructions" rows="8" 
+                                placeholder="在节点 node-1 上添加文件 /root/test.log&#10;在 Pod nginx-pod 上创建网络延迟，延迟 100ms&#10;在容器 app-container 中创建 CPU 负载，负载 60%"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="batchGenerateBtn">
+                        <i class="fas fa-layer-group"></i> 批量生成
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 成功提示 -->
+    <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+        <div id="successToast" class="toast" role="alert">
+            <div class="toast-header">
+                <i class="fas fa-check-circle text-success me-2"></i>
+                <strong class="me-auto">成功</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="toast"></button>
+            </div>
+            <div class="toast-body" id="successMessage">
+                操作成功完成！
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-yaml.min.js"></script>
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

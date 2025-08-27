@@ -1,0 +1,735 @@
+version: v1
+kind: plugin
+items:
+- target: nginx
+  shortDesc: Nginx experiment
+  longDesc: Nginx experiment
+  actions:
+  - action: crash
+    shortDesc: Crash experiment
+    longDesc: Nginx crash experiment
+    matchers:
+    - name: nginx-path
+      desc: The absolute path of nginx
+      noArgs: false
+      required: true
+      requiredWhenDestroyed: false
+    flags:
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # Nginx crash
+      blade create nginx crash --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Nginx restart
+      blade destroy nginx crash --nginx-path /usr/local/nginx/sbin/nginx
+    programs:
+    - chaos_nginxcrash
+    categories:
+    - middleware
+    actionProcessHang: false
+  - action: restart
+    shortDesc: Restart experiment
+    longDesc: Nginx restart experiment
+    matchers:
+    - name: nginx-path
+      desc: The absolute path of nginx
+      noArgs: false
+      required: true
+      requiredWhenDestroyed: false
+    flags:
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # Nginx restart
+      blade create nginx restart  --nginx-path /usr/local/nginx/sbin/nginx
+    programs:
+    - chaos_nginxrestart
+    categories:
+    - middleware
+    actionProcessHang: false
+  - action: config
+    shortDesc: Config experiment
+    longDesc: Nginx config
+    matchers:
+    - name: mode
+      desc: The configuration change mode (file or cmd)
+      noArgs: false
+      required: true
+      requiredWhenDestroyed: false
+    - name: file
+      desc: The new nginx.conf file
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: block
+      desc: The block locator for config modification, use 'global' if you want to
+        modify the global configuration.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: set-config
+      desc: Set multiple key-value config paris for specified block
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: nginx-path
+      desc: The absolute path of nginx
+      noArgs: false
+      required: true
+      requiredWhenDestroyed: false
+    flags:
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # Change config file to my.conf
+      blade create nginx config --mode file --file my.conf --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Change 'server[0]' exposed on port 8899
+      blade create nginx config --mode cmd --block 'http.server[0]' --set-config='listen=8899'  --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Set 'http.server[0].location[0]' proxy_pass to www.baidu.com
+      blade create nginx config --mode cmd --block 'http.server[0].location[0]' --set-config='proxy_pass=www.baidu.com'  --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Revert config change to the oldest config file
+      blade destroy nginx config --nginx-path /usr/local/nginx/sbin/nginx
+    programs:
+    - chaos_nginxconfig
+    categories:
+    - middleware
+    actionProcessHang: false
+  - action: response
+    shortDesc: Response experiment
+    longDesc: Nginx response experiment
+    matchers:
+    - name: body
+      desc: Change response body
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: header
+      desc: Change response header, you can use ';' to split multiple header kv pairs,
+        such as 'Content-Type=text/plain;Server=mock;'.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: code
+      desc: Change response code, default 200.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: path
+      desc: The URI which you will change response on. Note that one of --path and
+        --regex must be set and can't set both at the same time.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regex
+      desc: Change response path through lua regex. Note that one of --path and --regex
+        must be set and can't set both at the same time.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: The new response body type such as json and txt, or you can set Content-Type
+        header to achieve the same function. The default type is json.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: server
+      desc: There may be many server blocks in nginx.conf, so which server you want
+        to modify? The default server-id is 0.
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: nginx-path
+      desc: The absolute path of nginx
+      noArgs: false
+      required: true
+      requiredWhenDestroyed: false
+    flags:
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # Set /test return body='ok',code=200,type=json
+      blade create nginx response --path /test --body ok  --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Set /test return body='',code=500,type=json
+      blade create nginx response --path /test --code 500  --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Set /test return body='{"a":1}',code=200,type=json
+      blade create nginx response --path /test --code 200 --body '{"a":1}' --type json --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Set /t.* return body='{"a":1}',code=200,type=json, and add header 'Server=mock' to server[0]
+      blade create nginx response --regex /t.* --code 200 --body '{"a":1}' --header 'Server=mock;' --server 0 --nginx-path /usr/local/nginx/sbin/nginx
+
+      # Revert config change to the oldest config file
+      blade destroy nginx response  --nginx-path /usr/local/nginx/sbin/nginx
+    programs:
+    - chaos_nginxresponse
+    categories:
+    - middleware
+    actionProcessHang: false
+  scope: host
+- target: redis
+  shortDesc: Redis experiment
+  longDesc: Redis experiment
+  actions:
+  - action: cache-expire
+    aliases: [ce]
+    shortDesc: Cache Expire
+    longDesc: Expire the key in Redis
+    flags:
+    - name: addr
+      desc: The address of redis server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: password
+      desc: The password of redis server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: key
+      desc: The key to be set an expiry, default expire all keys
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: expiry
+      desc: The expiry of the key. An expiry string should be able to be converted
+        to a time duration, such as "5s" or "30m"
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: option
+      desc: |2
+
+        The additional options of expiry, only NX, XX, GT, LT supported:
+        NX -- Set expiry only when the key has no expiry
+        XX -- Set expiry only when the key has an existing expiry
+        GT -- Set expiry only when the new expiry is greater than current one
+        LT -- Set expiry only when the new expiry is less than current one
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # expire a key
+      blade create redis cache-expire --addr 192.168.56.101:6379 --password 123456 --key test1 --expiry 1m
+
+      # expire all keys only when the new expiry is greater than current one
+      blade create redis cache-expire --addr 192.168.56.101:6379 --password 123456 --option GT --expiry 1m
+    programs:
+    - chaos_cacheExpire
+    categories:
+    - system_process
+    actionProcessHang: false
+  - action: cache-limit
+    aliases: [cl]
+    shortDesc: Cache Memory Limit
+    longDesc: Set the maxmemory of Redis
+    flags:
+    - name: addr
+      desc: The address of redis server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: password
+      desc: The password of server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: size
+      desc: The size of cache
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: percent
+      desc: The percentage of maxmemory
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # set maxmemory to 256M
+      blade create redis cache-limit --addr 192.168.56.101:6379 --password 123456  --size 256M
+    programs:
+    - chaos_cacheLimit
+    categories:
+    - system_process
+    actionProcessHang: false
+  - action: cache-hot-key
+    aliases: [chk]
+    shortDesc: Cache Hot Key
+    longDesc: Set a key, then execute get and set command frequently
+    flags:
+    - name: addr
+      desc: The address of redis server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: password
+      desc: The password of redis server
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: key
+      desc: The key to be used
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: thread-count
+      desc: thread-count to do get and set command, default is 20
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: size
+      desc: value size, unit is byte, default is 512
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: duration
+      desc: duration time, default is 10m
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2
+
+      # set a key, execute get and set command frequently
+      blade create redis cache-hot-key --addr 192.168.56.101:6379 --password 123456 --key test1 --thread-count 10 --size 256 --duration 5m
+    programs:
+    - chaos_cacheHotKey
+    categories:
+    - system_process
+    actionProcessHang: true
+  scope: host

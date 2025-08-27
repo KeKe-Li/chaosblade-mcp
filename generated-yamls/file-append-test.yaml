@@ -1,0 +1,24 @@
+apiVersion: chaosblade.io/v1alpha1
+kind: ChaosBlade
+metadata:
+  name: file-append-test
+  namespace: default
+spec:
+  experiments:
+  - scope: node
+    target: file
+    action: append
+    desc: 文件追加测试
+    matchers:
+    - name: names
+      value:
+      - 10.148.55.112
+    flags:
+    - name: filepath
+      value: /root/test.log
+    - name: content
+      value: test content
+    - name: file
+      value: /root/test.log，内容为test
+    - name: file-path
+      value: /root/test.log

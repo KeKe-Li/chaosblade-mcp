@@ -1,0 +1,860 @@
+version: v1
+kind: plugin
+items:
+- target: aliyun
+  shortDesc: Aliyun experiment
+  longDesc: Aliyun experiment contains ecs, public ip, private ip, networkInterface,
+    securityGroup, VSwitch, disk
+  actions:
+  - action: ecs
+    shortDesc: do some aliyun ecs Operations, like stop, start, reboot
+    longDesc: do some aliyun ecs Operations, like stop, start, reboot
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of instances, support start, stop, reboot, etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: instances
+      desc: the instances list, split by comma
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # stop instances which instance id is i-x,i-y
+      blade create aliyun ecs --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type stop --instances i-x,i-y
+
+      # start instances which instance id is i-x,i-y
+      blade create aliyun ecs --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type start --instances i-x,i-y
+
+      # reboot instances which instance id is i-x,i-y
+      blade create aliyun ecs --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type reboot --instances i-x,i-y
+    programs:
+    - chaos_aliyun_ecs
+    categories:
+    - cloud_aliyun_ecs
+    actionProcessHang: false
+  - action: vSwitch
+    shortDesc: do some aliyun vSwitchId Operations, like delete
+    longDesc: do some aliyun vSwitchId Operations, like delete
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of VSwitch, support delete etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: vSwitchId
+      desc: the VSwitchId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # delete vSwitch which vSwitch id is i-x
+      blade create aliyun vSwitch --accessKeyId xxx --accessKeySecret yyy --type delete --vSwitchId i-x
+    programs:
+    - chaos_aliyun_vswitch
+    categories:
+    - cloud_aliyun_vSwitch
+    actionProcessHang: false
+  - action: securityGroup
+    shortDesc: do some aliyun securityGroupId Operations, like join, remove
+    longDesc: do some aliyun securityGroupId Operations, like join, remove
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: instanceId
+      desc: the ecs instanceId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: networkInterfaceId
+      desc: the networkInterfaceId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of SecurityGroup, support delete, remove etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: securityGroupId
+      desc: the SecurityGroupId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # remove instance i-x from securityGroup which securityGroup id is s-x
+      blade create aliyun securityGroup --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type remove --securityGroupId s-x --instanceId i-x
+
+      # join networkInterface n-x from securityGroup which securityGroup id is s-x
+      blade create aliyun securityGroup --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type join --securityGroupId s-x --networkInterfaceId n-x
+    programs:
+    - chaos_aliyun_securitygroup
+    categories:
+    - cloud_aliyun_securityGroup
+    actionProcessHang: false
+  - action: networkInterface
+    shortDesc: do some aliyun networkInterfaceId Operations, like detach, attach
+    longDesc: do some aliyun networkInterfaceId Operations, like detach, attach
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: instanceId
+      desc: the ecs instanceId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: networkInterfaceId
+      desc: the networkInterfaceId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of NetworkInterface, support attach, detach etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # attach networkInterface to instance i-x which networkInterface id is s-x
+      blade create aliyun networkInterface --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type attach --networkInterfaceId s-x --instanceId i-x
+
+      # detach instance i-x from networkInterface which networkInterface id is s-x
+      blade create aliyun networkInterface --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type detach --networkInterfaceId s-x --instanceId i-x
+    programs:
+    - chaos_aliyun_networkinterface
+    categories:
+    - cloud_aliyun_networkInterface
+    actionProcessHang: false
+  - action: publicIp
+    shortDesc: do some aliyun publicIp Operations, like release, unassociate
+    longDesc: do some aliyun publicIp Operations, like release, unassociate
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of PublicIp, support release, unassociate, etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: allocationId
+      desc: the allocationId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: publicIpAddress
+      desc: the PublicIpAddress
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # release publicIp which publicIpAddress is 1.1.1.1
+      blade create aliyun publicIp --accessKeyId xxx --accessKeySecret yyy --type release --publicIpAddress 1.1.1.1
+
+      # unassociate publicIp from instance i-x which allocationId id is a-x
+      blade create aliyun publicIp --accessKeyId xxx --accessKeySecret yyy --type unassociate --instanceId i-x --allocationId a-x
+    programs:
+    - chaos_aliyun_publicip
+    categories:
+    - cloud_aliyun_publicIp
+    actionProcessHang: false
+  - action: privateIp
+    shortDesc: do some aliyun private ip Operations, like unassign
+    longDesc: do some aliyun private ip Operations, like unassign
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of PrivateIp, support unassign etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: networkInterfaceId
+      desc: the networkInterfaceId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: privateIpAddress
+      desc: the PrivateIpAddress
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # unassociate private ip from networkInterfaceId n-x which privateIpAddress is 1.1.1.1,2.2.2.2
+      blade create aliyun privateIp --accessKeyId xxx --accessKeySecret yyy --type unassign --regionId cn-qingdao --networkInterfaceId n-x --privateIpAddress 1.1.1.1,2.2.2.2
+    programs:
+    - chaos_aliyun_privateip
+    categories:
+    - cloud_aliyun_privateIp
+    actionProcessHang: false
+  - action: disk
+    shortDesc: do some aliyun diskId Operations, like detach
+    longDesc: do some aliyun diskId Operations, like detach
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aliyun, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aliyun, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of Disk, support delete etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: diskId
+      desc: the diskId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: instanceId
+      desc: the instanceId
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aliyun
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # delete disk which disk id is i-x
+      blade create aliyun disk --accessKeyId xxx --accessKeySecret yyy --regionId cn-qingdao --type detach --instanceId i-x --diskId y
+    programs:
+    - chaos_aliyun_disk
+    categories:
+    - cloud_aliyun_disk
+    actionProcessHang: false
+  scope: host
+- target: aws
+  shortDesc: Aws experiment
+  longDesc: Aws experiment contains ec2
+  actions:
+  - action: ecs
+    shortDesc: do some aws ecs Operations, like stop, start, reboot
+    longDesc: do some aws ecs Operations, like stop, start, reboot
+    flags:
+    - name: accessKeyId
+      desc: the accessKeyId of aws, if not provided, get from env ACCESS_KEY_ID
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: accessKeySecret
+      desc: the accessKeySecret of aws, if not provided, get from env ACCESS_KEY_SECRET
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: regionId
+      desc: the regionId of aws
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: type
+      desc: the operation of instances, support start, stop, reboot, etc
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: instances
+      desc: the instances list, split by comma
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: channel
+      desc: Select the channel for execution, and you can now select SSH
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-host
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-port
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-user
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key
+      desc: Use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: ssh-key-passphrase
+      desc: Use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: blade-release
+      desc: Blade release package，use this flag when the channel is ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: override-blade-release
+      desc: Override blade release，use this flag when the channel is ssh
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: install-path
+      desc: install path default /opt/chaosblade，use this flag when the channel is
+        ssh
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: timeout
+      desc: set timeout for experiment
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    - name: async
+      desc: whether to create asynchronously, default is false
+      noArgs: true
+      required: false
+      requiredWhenDestroyed: false
+    - name: endpoint
+      desc: the create result reporting address. It takes effect only when the async
+        value is true and the value is not empty
+      noArgs: false
+      required: false
+      requiredWhenDestroyed: false
+    example: |2-
+
+      # stop instances which instance id is i-x,i-y
+      blade create aws ecs --accessKeyId xxx --accessKeySecret yyy --regionId us-west-2 --type stop --instances i-x,i-y
+
+      # start instances which instance id is i-x,i-y
+      blade create aws ecs --accessKeyId xxx --accessKeySecret yyy --regionId us-west-2 --type start --instances i-x,i-y
+
+      # reboot instances which instance id is i-x,i-y
+      blade create aws ecs --accessKeyId xxx --accessKeySecret yyy --regionId us-west-2 --type reboot --instances i-x,i-y
+    programs:
+    - chaos_aws_ec2
+    categories:
+    - cloud_aws_ec2
+    actionProcessHang: false
+  scope: host
