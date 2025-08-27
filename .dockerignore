@@ -1,10 +1,7 @@
 # Python
 __pycache__/
-*.py[cod]
 *$py.class
-*.so
 .Python
-build/
 develop-eggs/
 dist/
 downloads/
@@ -75,9 +72,6 @@ logs/*.log
 *.md
 docs/
 deploy.sh
-test/start_web.sh
-test/quick_start.sh
-test/final_start.sh
 .env
 .env.*
 config.ini
