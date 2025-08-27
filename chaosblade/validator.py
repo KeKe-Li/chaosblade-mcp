@@ -4,8 +4,7 @@ import subprocess
 import logging
 from typing import Dict, List, Any, Optional, Tuple
 
-from .models import ValidationResult, ParsedResult
-from .config import ScopeConfig, ValidationConfig
+from .models import ValidationResult, ParsedResult, ScopeConfig, ValidationConfig
 
 
 logger = logging.getLogger(__name__)

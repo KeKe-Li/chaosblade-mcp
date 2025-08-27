@@ -1,8 +1,7 @@
 import yaml
 import logging
 from typing import Dict, List, Any, Optional
-from .models import ParsedResult, GenerationResult
-from .config import TemplateConfig, ScopeConfig
+from .models import ParsedResult, GenerationResult, TemplateConfig, ScopeConfig
 from .validator import SmartParameterOptimizer, BestPracticesAdvisor
 
 

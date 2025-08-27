@@ -4,8 +4,7 @@ from typing import List, Optional
 
 from .parser import NaturalLanguageParser, ScopeDetector
 from .generator import YAMLGenerator, FileGenerator, BatchGenerator
-from .models import ParsedResult
-from .config import ScopeConfig
+from .models import ParsedResult, ScopeConfig
 
 
 logger = logging.getLogger(__name__)

@@ -1,6 +1,5 @@
 #!/bin/bash
-
-# ChaosBlade MCP 一键部署脚本
+# ChaosBlade MCP 一键docker部署脚本
 set -e
 
 echo "🚀 开始部署 ChaosBlade MCP 应用..."
