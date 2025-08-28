@@ -201,8 +201,32 @@ def health_check():
 
 if __name__ == '__main__':
     import os
+    import sys
+    
+    # 检查命令行参数中的端口
+    port = 5001
+    if len(sys.argv) > 1:
+        try:
+            port = int(sys.argv[1])
+        except ValueError:
+            print("Invalid port number, using default 5001")
+    
+    # 检查端口是否可用
+    import socket
+    def is_port_available(port):
+        try:
+            with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+                s.bind(('localhost', port))
+                return True
+        except OSError:
+            return False
+    
+    # 自动寻找可用端口
+    while not is_port_available(port) and port < 5010:
+        port += 1
+    
     print("🚀 ChaosBlade Web Interface starting...")
-    print("📱 Access at: http://localhost:5001")
+    print(f"📱 Access at: http://localhost:{port}")
     
     # 检查是否在容器环境中运行
     is_container = os.path.exists('/.dockerenv') or os.environ.get('FLASK_ENV') == 'production'
@@ -212,4 +236,4 @@ if __name__ == '__main__':
         print("🐳 Running in container mode with gunicorn")
     else:
         # 开发环境使用 Flask 开发服务器
-        app.run(debug=True, host='0.0.0.0', port=5001)
+        app.run(debug=True, host='0.0.0.0', port=port)

@@ -1,8 +1,3 @@
-"""
-ChaosBlade YAML Generator - 重构后的主入口
-混沌工程YAML配置生成工具
-"""
-
 import sys
 import os
 
