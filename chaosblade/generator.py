@@ -28,11 +28,13 @@ class YAMLGenerator:
                 parsed_data.scope,
                 parsed_data.target,
                 parsed_data.action,
-                parsed_data.description
+                [],  # matchers - 将在后续步骤中填充
+                []   # flags - 将在后续步骤中填充
             )
             
             # 3. 设置基本信息
             yaml_doc["metadata"]["name"] = parsed_data.name
+            yaml_doc["spec"]["experiments"][0]["desc"] = parsed_data.description
             
             # 4. 处理参数
             experiment = yaml_doc["spec"]["experiments"][0]
