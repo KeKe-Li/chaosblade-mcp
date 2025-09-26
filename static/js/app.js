@@ -4,11 +4,14 @@ class ChaosBladeApp {
     constructor() {
         this.currentYAML = '';
         this.currentFilename = '';
+        this.models = [];
+        this.selectedModel = null;
         this.init();
     }
 
     init() {
         this.bindEvents();
+        this.loadModels();
         this.loadTemplates();
         this.loadFiles();
     }
@@ -55,6 +58,11 @@ class ChaosBladeApp {
                 this.generateYAML();
             }
         });
+
+        // 模型选择事件
+        document.getElementById('modelSelect').addEventListener('change', (e) => {
+            this.onModelChange(e.target.value);
+        });
     }
 
     async generateYAML() {
@@ -68,12 +76,17 @@ class ChaosBladeApp {
         this.showLoading(true);
 
         try {
+            const requestBody = { instruction };
+            if (this.selectedModel) {
+                requestBody.model = this.selectedModel;
+            }
+
             const response = await fetch('/api/generate', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ instruction })
+                body: JSON.stringify(requestBody)
             });
 
             const result = await response.json();
@@ -147,6 +160,105 @@ class ChaosBladeApp {
         } finally {
             this.showLoading(false);
         }
+    }
+
+    async loadModels() {
+        try {
+            const response = await fetch('/api/models');
+            const result = await response.json();
+
+            if (result.success) {
+                this.models = result.models;
+                this.renderModelSelect(result.models, result.default_model);
+            } else {
+                console.error('加载模型列表失败:', result.error);
+                this.showError('加载模型列表失败');
+            }
+        } catch (error) {
+            console.error('加载模型列表失败:', error);
+            // 设置默认选项
+            this.renderModelSelectFallback();
+        }
+    }
+
+    renderModelSelect(models, defaultModel) {
+        const modelSelect = document.getElementById('modelSelect');
+        modelSelect.innerHTML = '';
+
+        // 添加默认选项
+        const defaultOption = document.createElement('option');
+        defaultOption.value = '';
+        defaultOption.textContent = '请选择AI模型';
+        modelSelect.appendChild(defaultOption);
+
+        // 添加模型选项
+        models.forEach(model => {
+            const option = document.createElement('option');
+            option.value = model.key;
+            
+            // 显示配置状态
+            const statusIcon = model.status === 'ready' ? '✅' : '⚠️';
+            option.textContent = `${statusIcon} ${model.display_name} (${model.status === 'ready' ? 'Ready' : 'Needs Config'})`;
+            
+            if (model.key === defaultModel) {
+                option.selected = true;
+                this.selectedModel = model.key;
+                this.updateModelInfo(model);
+            }
+            
+            // 如果没有配置API密钥，禁用选项（除了llama3.1）
+            if (model.status === 'needs_config' && model.key !== 'llama3.1') {
+                option.disabled = true;
+            }
+            
+            modelSelect.appendChild(option);
+        });
+    }
+
+    renderModelSelectFallback() {
+        const modelSelect = document.getElementById('modelSelect');
+        modelSelect.innerHTML = '<option value="">模型列表加载失败，将使用默认模型</option>';
+    }
+
+    onModelChange(modelKey) {
+        if (!modelKey) {
+            this.selectedModel = null;
+            this.updateModelInfo(null);
+            return;
+        }
+
+        this.selectedModel = modelKey;
+        const model = this.models.find(m => m.key === modelKey);
+        if (model) {
+            this.updateModelInfo(model);
+        }
+    }
+
+    updateModelInfo(model) {
+        const modelInfo = document.getElementById('modelInfo');
+        
+        if (!model) {
+            modelInfo.innerHTML = '<small class="text-muted">请选择模型查看详情</small>';
+            return;
+        }
+
+        const statusBadge = model.status === 'ready' ? 
+            '<span class="badge bg-success">已配置</span>' : 
+            '<span class="badge bg-warning">需要配置</span>';
+
+        modelInfo.innerHTML = `
+            <div>
+                <div class="d-flex align-items-center mb-2">
+                    <span class="model-badge me-2">${model.display_name}</span>
+                    ${statusBadge}
+                </div>
+                <div class="model-details">
+                    <div><strong>温度:</strong> ${model.temperature} | <strong>最大令牌:</strong> ${model.max_tokens} | <strong>超时:</strong> ${model.timeout}s</div>
+                    <div><small class="text-muted">API地址: ${model.base_url}</small></div>
+                    ${model.status === 'needs_config' ? '<div><small class="text-warning">⚠️ 需要在config.py中配置API密钥</small></div>' : ''}
+                </div>
+            </div>
+        `;
     }
 
     async loadTemplates() {

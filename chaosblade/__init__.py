@@ -45,9 +45,9 @@ __all__ = [
 ]
 
 
-def create_parser(base_url: str = None) -> NaturalLanguageParser:
+def create_parser(base_url: str = None, model: str = None) -> NaturalLanguageParser:
     """创建解析器实例"""
-    return NaturalLanguageParser(base_url)
+    return NaturalLanguageParser(base_url, model)
 
 def create_generator() -> YAMLGenerator:
     """创建生成器实例"""
@@ -59,17 +59,18 @@ def create_cli() -> ChaosBladeCLI:
     return ChaosBladeCLI()
 
 
-def quick_generate(instruction: str, output_file: str = None) -> str:
+def quick_generate(instruction: str, output_file: str = None, model: str = None) -> str:
     """快速生成YAML
     
     Args:
         instruction: 自然语言指令
         output_file: 输出文件路径（可选）
+        model: 使用的模型（可选）
     
     Returns:
         生成的YAML内容
     """
-    parser = create_parser()
+    parser = create_parser(model=model)
     generator = create_generator()
     
     parsed_data = parser.parse_instruction(instruction)

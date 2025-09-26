@@ -18,16 +18,24 @@ logger = logging.getLogger(__name__)
 class NaturalLanguageParser:
     """自然语言解析器"""
     
-    def __init__(self, base_url: str = None):
-        # 使用配置文件中的设置
-        base_url = base_url or config.LLM_BASE_URL
-        api_key = config.LLM_API_KEY or "EMPTY"
+    def __init__(self, base_url: str = None, model: str = None):
+        # 设置模型
+        self.model_key = model or "llama3.1"
+        self.model_name = config.get_model_name(self.model_key)
+        self.model_config = config.get_model_config(self.model_key)
         
-        # 创建OpenAI客户端，使用配置的headers
+        # 获取模型特定的API配置
+        api_config = config.get_effective_api_config(self.model_key)
+        
+        # 如果传入了base_url，优先使用
+        if base_url:
+            api_config["base_url"] = base_url
+            
+        # 创建OpenAI客户端，使用模型特定的配置
         self.client = OpenAI(
-            base_url=base_url, 
-            api_key=api_key,
-            default_headers=config.LLM_DEFAULT_HEADERS
+            base_url=api_config["base_url"], 
+            api_key=api_config["api_key"],
+            default_headers=api_config["headers"]
         )
         
         self.specifications = self._load_yaml_specifications()

@@ -9,6 +9,7 @@ from datetime import datetime
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from chaosblade import quick_generate, batch_generate, create_parser, create_generator
+import config
 
 app = Flask(__name__)
 CORS(app)
@@ -16,6 +17,7 @@ CORS(app)
 # 配置
 app.config['SECRET_KEY'] = 'your-secret-key-here'
 app.config['GENERATED_DIR'] = 'generated-yamls'
+
 
 # 确保生成目录存在
 os.makedirs(app.config['GENERATED_DIR'], exist_ok=True)
@@ -31,6 +33,7 @@ def generate_yaml():
     try:
         data = request.get_json()
         instruction = data.get('instruction', '').strip()
+        model = data.get('model', None)
         
         if not instruction:
             return jsonify({
@@ -39,7 +42,7 @@ def generate_yaml():
             }), 400
         
         # 生成YAML
-        yaml_content = quick_generate(instruction)
+        yaml_content = quick_generate(instruction, model=model)
         
         # 生成文件名
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
@@ -84,6 +87,42 @@ def batch_generate_yaml():
             'success': True,
             'results': results,
             'total': len(results)
+        })
+        
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+@app.route('/api/models', methods=['GET'])
+def get_models():
+    """获取可用模型列表"""
+    try:
+        models = []
+        for key, name in config.AVAILABLE_MODELS.items():
+            model_config = config.get_model_config(key)
+            api_config = config.get_model_api_config(key)
+            
+            # 检查API密钥是否已配置
+            has_api_key = bool(api_config.get('api_key')) or key == 'llama3.1'
+            
+            models.append({
+                'key': key,
+                'name': name,
+                'display_name': key.replace('-', ' ').title(),
+                'temperature': model_config.get('temperature', 0.1),
+                'max_tokens': model_config.get('max_tokens', 4096),
+                'timeout': model_config.get('timeout', 30),
+                'base_url': api_config.get('base_url', 'N/A'),
+                'has_api_key': has_api_key,
+                'status': 'ready' if has_api_key else 'needs_config'
+            })
+        
+        return jsonify({
+            'success': True,
+            'models': models,
+            'default_model': 'llama3.1'
         })
         
     except Exception as e:
