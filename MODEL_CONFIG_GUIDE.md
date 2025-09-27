@@ -34,10 +34,12 @@
 ```python
 "gpt-5": {
     "base_url": "https://api.openai.com/v1",
-    "api_key": "sk-xxxxxxxxxxxxxxxx",  # 你的OpenAI API密钥
+    "api_key": "",  # 你的OpenAI API密钥
     "headers": {}
-},
+}
 ```
+
+
 
 **获取方式:**
 1. 访问 [OpenAI平台](https://platform.openai.com/)
@@ -181,23 +183,5 @@ MODEL_API_CONFIGS = {
 ```bash
 python3 quick_start.py
 ```
-
 访问 http://localhost:5001，选择已配置的模型进行测试。
 
-## 💡 故障排除
-
-**问题**: 模型显示"需要配置"
-**解决**: 检查API密钥是否正确填入，确保没有多余的空格或换行符
-
-**问题**: API调用失败
-**解决**: 
-1. 验证API密钥是否有效
-2. 检查网络连接
-3. 确认API服务商的使用配额
-
-**问题**: 配置修改不生效
-**解决**: 重启应用程序
-
----
-
-更多问题请查看项目文档或提交Issue。
