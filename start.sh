@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# ChaosBlade MCP 一键启动脚本
-# 作者: ChaosBlade Team
-# 版本: 1.0.0
-
 set -e
 
 # 颜色定义
