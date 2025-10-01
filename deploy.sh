@@ -3,7 +3,7 @@
 # ChaosBlade Web Interface 一键部署启动脚本
 # 一键安装依赖并启动Web界面
 
-set -e  # 遇到错误立即退出
+set -e
 
 # 颜色定义
 RED='\033[0;31m'
