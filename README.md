@@ -197,29 +197,33 @@ python3 chat.py --interactive
 **第一次使用需要配置API密钥！** 
 
 1. **查看配置指南**：
-   ```bash
-   cat MODEL_CONFIG_GUIDE.md
-   ```
+
+```bash
+cat MODEL_CONFIG_GUIDE.md
+```
 
 2. **编辑配置文件**：
-   ```bash
-   nano config.py
-   ```
+
+```bash
+nano config.py
+```
 
 3. **填入API密钥**：
-   ```python
-   MODEL_API_CONFIGS = {
-       "deepseek-r1": {
-           "api_key": "sk-your-deepseek-key-here"  # 填入你的密钥
-       },
-       # ... 其他模型配置
-   }
-   ```
+
+```python
+MODEL_API_CONFIGS = {
+   "deepseek-r1": {
+       "api_key": "sk-your-deepseek-key-here"  # 填入你的密钥
+   },
+   # ... 其他模型配置
+}
+```
 
 4. **重启应用**：
-   ```bash
-   python3 quick_start.py
-   ```
+
+```bash
+python3 quick_start.py
+```
 
 **支持的API服务商**：
 - 🔥 DeepSeek API
