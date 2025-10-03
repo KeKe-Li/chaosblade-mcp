@@ -10,7 +10,7 @@ RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-NC='\033[0m' # No Color
+NC='\033[0m'
 
 # 日志函数
 log_info() {
@@ -119,7 +119,6 @@ check_port() {
 # 创建必要的目录
 create_directories() {
     log_info "创建必要的目录..."
-    
     mkdir -p templates
     mkdir -p static/css
     mkdir -p static/js
