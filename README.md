@@ -167,9 +167,9 @@ python3 chat.py --interactive
 ## 📱 访问方式
 
 启动成功后：
-- **Web界面**: http://localhost:5001 (端口可能自动调整)
-- **API接口**: http://localhost:5001/api/
-- **健康检查**: http://localhost:5001/api/health
+- Web界面: http://localhost:5001 (端口可能自动调整)
+- API接口: http://localhost:5001/api/
+- 健康检查: http://localhost:5001/api/health
 
 ## 🎯 多模型支持
 
