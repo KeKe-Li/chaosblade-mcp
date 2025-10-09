@@ -2,8 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-ChaosBlade MCP 快速启动脚本
-支持跨平台一键启动
+ChaosBlade MCP 支持跨平台一键启动
 """
 
 import os
