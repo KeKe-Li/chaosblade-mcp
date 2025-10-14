@@ -68,26 +68,41 @@ class YAMLGenerator:
     
     def _process_parameters(self, experiment: Dict[str, Any], params: Dict[str, Any], scope: str):
         """处理参数"""
-        matchers = []
-        flags = []
-        
+        matchers: List[Dict[str, Any]] = []
+        existing_matchers = experiment.get("matchers", [])
+        if isinstance(existing_matchers, list):
+            matchers.extend(existing_matchers)
+
+        flags: List[Dict[str, Any]] = []
+        existing_flags = experiment.get("flags", [])
+        existing_flag_index: Dict[str, Dict[str, Any]] = {}
+        if isinstance(existing_flags, list):
+            for flag in existing_flags:
+                if isinstance(flag, dict) and "name" in flag:
+                    flags.append(flag)
+                    existing_flag_index[flag["name"]] = flag
+
         # 获取作用域配置
         scope_config = ScopeConfig.get_scope_config(scope)
         required_matchers = scope_config.get("required_matchers", [])
         optional_matchers = scope_config.get("optional_matchers", [])
-        
+
         # 分离matchers和flags
         for param_name, param_value in params.items():
             if param_name in required_matchers or param_name in optional_matchers:
                 # 处理matchers
-                if isinstance(param_value, list):
-                    matchers.append({"name": param_name, "value": param_value})
-                else:
-                    matchers.append({"name": param_name, "value": [param_value]})
+                values = param_value if isinstance(param_value, list) else [param_value]
+                matchers.append({"name": param_name, "value": values})
             else:
                 # 处理flags
-                flags.append({"name": param_name, "value": str(param_value)})
-        
+                flag_value = str(param_value)
+                if param_name in existing_flag_index:
+                    existing_flag_index[param_name]["value"] = flag_value
+                else:
+                    flag_entry = {"name": param_name, "value": flag_value}
+                    flags.append(flag_entry)
+                    existing_flag_index[param_name] = flag_entry
+
         # 添加到实验配置
         experiment["matchers"] = matchers
         experiment["flags"] = flags
