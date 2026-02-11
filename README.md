@@ -1,4 +1,4 @@
-# ChaosBlade YAML生成故障注入
+## ChaosBlade YAML生成故障注入
 
 ### 显示效果
 
@@ -11,7 +11,7 @@
 配置 config.py中的大模型 LLM_BASE_URL和Authorization，如果自己大模型没有配置Authorization，就不需要配置
 ```
 
-## 基本命令
+### 基本命令
 
 ### 1. 直接生成 YAML
 ```bash
@@ -30,7 +30,7 @@ python chat.py -i
 python chat.py --test
 ```
 
-## 快速示例
+### 快速示例
 
 ### Node 作用域
 ```bash
@@ -82,7 +82,7 @@ python chat.py "在主机 server-01 上停止 nginx 服务"
 python chat.py "暂停容器 container-id-12345，运行时为 docker"
 ```
 
-## 常用参数模式
+### 常用参数模式
 
 ### 文件操作
 - 基本格式: `在[目标]上添加文件[路径]，内容为[内容]`
@@ -102,7 +102,7 @@ python chat.py "暂停容器 container-id-12345，运行时为 docker"
 - 示例: `在 Pod app-pod 中杀死 nginx 进程，使用信号 9`
 
 
-## 🚀 一键启动
+### 一键启动
 
 ### 方式一：Python快速启动（推荐）
 
@@ -164,14 +164,14 @@ python3 web_app.py
 python3 chat.py --interactive
 ```
 
-## 📱 访问方式
+### 📱 访问方式
 
 启动成功后：
 - Web界面: http://localhost:5001 (端口可能自动调整)
 - API接口: http://localhost:5001/api/
 - 健康检查: http://localhost:5001/api/health
 
-## 🎯 多模型支持
+###  多模型支持
 
 现已支持15个主流AI模型：
 
@@ -192,7 +192,7 @@ python3 chat.py --interactive
 | Qwen3 Coder 480B | `qwen3-coder-480b` | 大规模代码 | ⚠️ 需配置 |
 | Llama3.1 | `llama3.1` | 开源模型 | ✅ 已配置 |
 
-## ⚙️ 模型配置
+### ⚙️ 模型配置
 
 **第一次使用需要配置API密钥！** 
 
@@ -251,7 +251,7 @@ curl -X POST http://localhost:5001/api/generate \
 curl http://localhost:5001/api/models
 ```
 
-## 🛠️ 开发建议
+### 🛠️ 开发建议
 
 * 确保目标资源存在且可访问
 * 设置合理的超时时间
