@@ -7,26 +7,30 @@
 </p>
 
 ### 使用配置
-```bash
+
+```markdown
 配置 config.py中的大模型 LLM_BASE_URL和Authorization，如果自己大模型没有配置Authorization，就不需要配置
 ```
 
 ### 基本命令
 
 ### 1. 直接生成 YAML
-```bash
+
+```markdown
 python chat.py "自然语言描述"
 ```
 
 ### 2. 交互式模式
-```bash
+
+```markdown
 python chat.py --interactive
 # 或
 python chat.py -i
 ```
 
 ### 3. 批量测试
-```bash
+
+```markdown
 python chat.py --test
 ```
 
