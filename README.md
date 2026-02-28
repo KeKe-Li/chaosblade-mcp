@@ -1,6 +1,6 @@
 ## ChaosBlade YAML生成故障注入
 
-### 显示效果
+### 实现效果
 
 <p align="center">
 <img width="100%" align="center" src="images/1.jpg" />
